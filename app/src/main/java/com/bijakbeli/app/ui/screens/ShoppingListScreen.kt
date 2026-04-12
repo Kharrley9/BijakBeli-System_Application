@@ -43,7 +43,7 @@ fun ShoppingListScreen() {
             Spacer(modifier = Modifier.height(8.dp))
             
             // List Items
-            ShoppingListContent()
+            ShoppingListContent(modifier = Modifier.weight(1f))
             
             // Bottom Checkout Summary
             CheckoutSummary()
@@ -76,7 +76,7 @@ fun ShoppingBudgetCard() {
 }
 
 @Composable
-fun ShoppingListContent() {
+fun ShoppingListContent(modifier: Modifier = Modifier) {
     val items = listOf(
         ShoppingItem("Milo 1kg", "Lotus's", 18.90, 2),
         ShoppingItem("Gardenia Bread", "MYDIN", 3.20, 1),
@@ -85,7 +85,7 @@ fun ShoppingListContent() {
     )
 
     LazyColumn(
-        modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
+        modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
