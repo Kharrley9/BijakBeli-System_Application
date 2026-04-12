@@ -1,0 +1,15 @@
+# Build folders
+build/
+app/build/
+.gradle/
+
+# IDE files
+.idea/
+*.iml
+
+# Local configuration
+local.properties
+.DS_Store
+
+# Captures
+captures/
