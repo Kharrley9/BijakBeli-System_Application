@@ -13,29 +13,47 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = VibrantGreen,
-    secondary = GoldHighlight,
-    tertiary = BPMallGreen,
-    background = DarkGreen,
-    surface = DarkGreen,
+    primary = TealLight,
     onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onTertiary = Color.White,
-    onBackground = Color.White,
-    onSurface = Color.White
+    primaryContainer = DarkTeal,
+    onPrimaryContainer = TealSurface,
+    secondary = CoralLight,
+    onSecondary = Color.White,
+    secondaryContainer = WarmCoral,
+    onSecondaryContainer = CoralSurface,
+    tertiary = AccentGold,
+    onTertiary = Color.Black,
+    background = Color(0xFF0F1A1B),
+    onBackground = TextOnDark,
+    surface = Color(0xFF152627),
+    onSurface = TextOnDark,
+    surfaceVariant = Color(0xFF1E3334),
+    onSurfaceVariant = Color(0xFFBBC8CA),
+    outline = Color(0xFF3A5456),
+    error = ErrorRed,
+    onError = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = ForestGreen,
-    secondary = BestPriceGold,
-    tertiary = BPMallGreen,
-    background = BackgroundLight,
-    surface = SurfaceLight,
+    primary = DeepTeal,
     onPrimary = Color.White,
-    onSecondary = Color.Black,
+    primaryContainer = TealSurface,
+    onPrimaryContainer = DarkTeal,
+    secondary = WarmCoral,
+    onSecondary = Color.White,
+    secondaryContainer = CoralSurface,
+    onSecondaryContainer = Color(0xFF7A2020),
+    tertiary = AccentGold,
     onTertiary = Color.White,
-    onBackground = TextDark,
-    onSurface = TextDark
+    background = BackgroundLight,
+    onBackground = TextPrimary,
+    surface = SurfaceWhite,
+    onSurface = TextPrimary,
+    surfaceVariant = SurfaceVariant,
+    onSurfaceVariant = TextSecondary,
+    outline = DividerColor,
+    error = ErrorRed,
+    onError = Color.White
 )
 
 @Composable
@@ -56,8 +74,8 @@ fun BijakBeliTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = Color.Transparent.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 

@@ -8,15 +8,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bijakbeli.app.ui.theme.BijakBeliTheme
-import com.bijakbeli.app.ui.screens.SplashScreen
-import com.bijakbeli.app.ui.screens.LoginScreen
-import com.bijakbeli.app.ui.screens.HomeScreen
-import com.bijakbeli.app.ui.screens.ComparisonScreen
-import com.bijakbeli.app.ui.screens.ShoppingListScreen
+import com.bijakbeli.app.ui.screens.*
+import com.bijakbeli.app.viewmodel.BijakBeliViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +35,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun BijakBeliApp() {
     val navController = rememberNavController()
+    val viewModel: BijakBeliViewModel = viewModel()
+
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
             SplashScreen(onSplashFinished = {
@@ -52,17 +52,81 @@ fun BijakBeliApp() {
                         popUpTo("login") { inclusive = true }
                     }
                 },
-                onRegisterClick = { /* navController.navigate("register") */ }
+                onRegisterClick = {
+                    navController.navigate("register")
+                }
+            )
+        }
+        composable("register") {
+            RegisterScreen(
+                onRegisterClick = {
+                    navController.navigate("home") {
+                        popUpTo("register") { inclusive = true }
+                    }
+                },
+                onLoginClick = {
+                    navController.popBackStack()
+                }
             )
         }
         composable("home") {
-            HomeScreen()
+            HomeScreen(navController = navController, viewModel = viewModel)
         }
-        composable("comparison") {
-            ComparisonScreen()
+        composable("search") {
+            SearchScreen(
+                viewModel = viewModel,
+                onBackClick = { navController.popBackStack() },
+                onProductClick = { productId ->
+                    navController.navigate("product_detail/$productId")
+                }
+            )
+        }
+        composable("product_detail/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: "p1"
+            ProductDetailScreen(
+                productId = productId,
+                viewModel = viewModel,
+                onBackClick = { navController.popBackStack() },
+                onCompareClick = { navController.navigate("comparison/$productId") },
+                onAlternativeClick = { altId ->
+                    navController.navigate("product_detail/$altId")
+                }
+            )
+        }
+        composable("comparison/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: "p1"
+            ComparisonScreen(
+                productId = productId,
+                viewModel = viewModel,
+                onBackClick = { navController.popBackStack() },
+                onProductClick = { altId ->
+                    navController.navigate("product_detail/$altId")
+                }
+            )
         }
         composable("shopping_list") {
-            ShoppingListScreen()
+            ShoppingListScreen(navController = navController, viewModel = viewModel)
+        }
+        composable("promotions") {
+            PromotionsScreen(navController = navController)
+        }
+        composable("savings_report") {
+            SavingsReportScreen(
+                navController = navController,
+                viewModel = viewModel,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable("profile") {
+            ProfileScreen(
+                navController = navController,
+                viewModel = viewModel,
+                onLogoutClick = {
+                    navController.navigate("login") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }
